@@ -30,8 +30,26 @@ class Turtle(object):
         if self._visible:
             self._path[len(self._path)-1].append((self.x, self.y))
 
+    def forward(self, dist):
+        self.move(dist)
+    
+    def backward(self, dist):
+        self.move(-dist)
+
     def rotate(self, degrees):
         self.rot += degrees
+    
+    def right(self, degrees):
+        self.rotate(-degrees)
+
+    def left(self, degrees):
+        self.rotate(degrees)
+
+    def up(self):
+        self.visible = False
+    
+    def down(self):
+        self.visible = True
     
     def push(self):
         self._stack.append((self.x, self.y))
@@ -46,6 +64,9 @@ class Turtle(object):
         self.pos = self._stack.pop()
 
         self._visible = prev_visible
+
+    def polygon(self):
+        self.type = "polygon" if self.type == "line" else "line"
     
     def draw(self, canvas):
         draw = ImageDraw.Draw(canvas)
@@ -67,7 +88,7 @@ class Turtle(object):
             width = curr_segment[1]
             color = curr_segment[2]
 
-            return typ != self.type or width != self.width or color != self.color
+            return typ != self.type or (width != self.width and typ == "line") or color != self.color
         return False
 
     @property
