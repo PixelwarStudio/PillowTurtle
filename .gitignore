@@ -104,3 +104,6 @@ venv.bak/
 .mypy_cache/
 
 .pytest_cache
+
+# My sandbox file
+main.py
