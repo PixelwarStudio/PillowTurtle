@@ -52,13 +52,13 @@ class Turtle(object):
         self.visible = True
     
     def push(self):
-        self._stack.append((self.x, self.y))
+        self._stack.append([self.x, self.y])
         self._stack.append(self.rot)
 
     def pop(self):
         prev_visible = self._visible
 
-        self._visible = False
+        self.up()
 
         self.rot = self._stack.pop()
         self.pos = self._stack.pop()
