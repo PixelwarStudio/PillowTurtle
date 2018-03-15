@@ -13,7 +13,9 @@ class Turtle(object):
 
     def __attrs_post_init__(self):
         self._path = [] 
-        self._stack = []
+        self._stacks = {
+            "default": []
+        }
         self._changed = False
 
     def move(self, dist):
@@ -51,17 +53,20 @@ class Turtle(object):
     def down(self):
         self.visible = True
     
-    def push(self):
-        self._stack.append([self.x, self.y])
-        self._stack.append(self.rot)
+    def push(self, name="default"):
+        if name not in self._stacks:
+            self._stacks[name] = []
+        
+        self._stacks[name].append([self.x, self.y])
+        self._stacks[name].append(self.rot)
 
-    def pop(self):
+    def pop(self, name="default"):
         prev_visible = self._visible
 
         self.up()
 
-        self.rot = self._stack.pop()
-        self.pos = self._stack.pop()
+        self.rot = self._stacks[name].pop()
+        self.pos = self._stacks[name].pop()
 
         self._visible = prev_visible
 
