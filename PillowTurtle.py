@@ -1,17 +1,15 @@
 from math import cos, sin, radians as rad
 from PIL import ImageDraw
-import attr
 
-@attr.s
 class Turtle(object):
-    pos = attr.ib(default=[0, 0])
-    rot = attr.ib(default=0)
-    _visible = attr.ib(default=True)
-    type = attr.ib(default="line")
-    width = attr.ib(default=1)
-    color = attr.ib(default=(255, 255, 255))
+    def __init__(self, pos=[0,0], rot=0, typ="line", width=1, color=(255,255,255)):
+        self.pos = pos
+        self.rot = rot
+        self.type = typ
+        self.width = width
+        self.color = color
 
-    def __attrs_post_init__(self):
+        self._visible = True
         self._path = [] 
         self._stacks = {
             "default": []
