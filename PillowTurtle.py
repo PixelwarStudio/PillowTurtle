@@ -10,7 +10,7 @@ class Turtle(object):
         self.color = color
 
         self._visible = True
-        self._path = [] 
+        self._path = []
         self._stacks = {
             "default": []
         }
@@ -19,7 +19,14 @@ class Turtle(object):
     def move(self, dist):
         if self._visible:
             if self._path == [] or self._changed or self._props_changed():
-                self._path.append([self.type, self.width, self.color, (self.x, self.y)])
+                self._path.append({
+                    "type": self.type,
+                    "width": self.width,
+                    "color": self.color,
+                    "points": [
+                        tuple(self.pos)
+                    ]
+                })
                 self._changed = False
                 
         # Calculate new position
@@ -28,7 +35,7 @@ class Turtle(object):
         self.y += sin(rad_rot) * dist
 
         if self._visible:
-            self._path[len(self._path)-1].append((self.x, self.y))
+            self._path[len(self._path)-1]["points"].append(tuple(self.pos))
 
     def forward(self, dist):
         self.move(dist)
@@ -55,7 +62,7 @@ class Turtle(object):
         if name not in self._stacks:
             self._stacks[name] = []
         
-        self._stacks[name].append([self.x, self.y])
+        self._stacks[name].append(self.pos)
         self._stacks[name].append(self.rot)
 
     def pop(self, name="default"):
@@ -73,25 +80,17 @@ class Turtle(object):
     
     def draw(self, canvas):
         draw = ImageDraw.Draw(canvas)
-        for segment in self._path:
-            type = segment[0]
-            width = segment[1]
-            color = segment[2]
-
-            if type=="line":
-                draw.line(segment[3:], color, width)
-            elif type=="polygon":
-                draw.polygon(segment[3:], color)
+        for seg in self._path:
+            if seg["type"]=="line":
+                draw.line(seg["points"], seg["color"], seg["width"])
+            elif seg["type"]=="polygon":
+                draw.polygon(seg["points"], seg["color"])
     
     def _props_changed(self):
         if self._path != []:
-            curr_segment = self._path[len(self._path)-1]
+            curr = self._path[len(self._path)-1]
 
-            typ = curr_segment[0]
-            width = curr_segment[1]
-            color = curr_segment[2]
-
-            return typ != self.type or (width != self.width and typ == "line") or color != self.color
+            return curr["type"] != self.type or (curr["width"] != self.width and curr["type"] == "line") or curr["color"] != self.color
         return False
 
     @property
