@@ -4,7 +4,7 @@ from PIL import ImageDraw
 class Turtle(object):
     def __init__(self, pos=[0,0], rot=0, typ="line", width=1, color=(255,255,255)):
         # TODO Turtle() doesnt work properly for multiple turtles, start pos of new turtles equal to previous one.
-        self.pos = pos
+        self.pos = pos.copy()
         self.rot = rot
         self.type = typ
         self.width = width

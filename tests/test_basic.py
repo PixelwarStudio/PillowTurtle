@@ -9,7 +9,7 @@ seed(23423)
 def init_turtles():
     t1 = Turtle()
     t1.speed(0)
-    t2 = Turtle2([0, 0])
+    t2 = Turtle2()
 
     return (t1, t2)
 
