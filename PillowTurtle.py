@@ -63,7 +63,7 @@ class Turtle(object):
         if name not in self._stacks:
             self._stacks[name] = []
         
-        self._stacks[name].append(self.pos)
+        self._stacks[name].append([self.x, self.y])
         self._stacks[name].append(self.rot)
 
     def pop(self, name="default"):
@@ -73,7 +73,6 @@ class Turtle(object):
 
         self.rot = self._stacks[name].pop()
         self.pos = self._stacks[name].pop()
-
         self._visible = prev_visible
 
     def polygon(self):
